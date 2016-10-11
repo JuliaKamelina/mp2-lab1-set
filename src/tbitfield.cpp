@@ -47,7 +47,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
-	return 1<<(n&sizeof(TELEM));
+	return 1<<(n&(8*sizeof(TELEM)-1));
 }
 
 // доступ к битам битового поля
@@ -94,8 +94,8 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 		pMem=new TELEM[MemLen];
 	}
 	if(pMem!=NULL)
-		for(int i=0;i<MemLen;++i)
-			pMem[i]=bf.MemLen;
+		for(int i=0;i<MemLen;i++)
+			pMem[i]=bf.pMem[i];
 	return *this;
 }
 
@@ -106,8 +106,8 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 		res=0;
 	else
 	{
-		for(int i=0;i<MemLen;++i)
-			if(pMem[i]!=bf.pMem[i])
+		for(int i=0;i<BitLen;i++)
+			if((*this).GetBit(i)!=bf.GetBit(i))
 			{
 				res=0;
 				break;
@@ -118,62 +118,46 @@ int TBitField::operator==(const TBitField &bf) const // сравнение
 
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-  return ~((*this)==bf);
+	int res;
+	if(*this==bf)
+		res=0;
+	else res=1;
+	return res;
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
-	int n;
-	TBitField tmp(0);
-	if(BitLen<bf.BitLen)
-	{
-		n=MemLen;
-		tmp=bf;
-	}
-	else
-	{
-		n=bf.MemLen;
-		tmp=*this;
-	}
-		for(int i=0;i<n;i++)
-		{
-			tmp.pMem[i]=pMem[i]|bf.pMem[i];
-		}
-		return tmp;
+	int n=BitLen;
+	if(bf.BitLen>n)
+		n=bf.BitLen;
+	TBitField tmp(n);
+	for(int i=0;i<MemLen;i++)
+		tmp.pMem[i]=pMem[i];
+	for(int i=0;i<bf.MemLen;i++)
+		tmp.pMem[i]|=bf.pMem[i];
+	return tmp;
 }
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-	int n;
-	TBitField tmp(0);
-	if(BitLen<bf.BitLen)
-	{
-		n=MemLen;
-		tmp=bf;
-	}
-	else
-	{
-		n=bf.MemLen;
-		tmp=*this;
-	}
-		for(int i=0;i<n;i++)
-		{
-			tmp.pMem[i]=pMem[i]&bf.pMem[i];
-		}
-		return tmp;
+	int n=BitLen;
+	if(bf.BitLen>n)
+		n=bf.BitLen;
+	TBitField tmp(n);
+	for(int i=0;i<MemLen;i++)
+		tmp.pMem[i]=pMem[i];
+	for(int i=0;i<bf.MemLen;i++)
+		tmp.pMem[i]&=bf.pMem[i];
+	return tmp;
 }
 
 TBitField TBitField::operator~(void) // отрицание
 {
 	TBitField tmp(BitLen);
 	for(int i=0;i<BitLen;i++)
-		if(!tmp.GetBit(i))
+		if(!(*this).GetBit(i))
 			tmp.SetBit(i);
 	return tmp;
-	/*TBitField tmp(BitLen);
-	for(int i=0;i<MemLen;++i)
-		tmp.pMem[i]=~pMem[i];
-	return tmp;*/
 }
 
 // ввод/вывод

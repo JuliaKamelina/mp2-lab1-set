@@ -75,7 +75,11 @@ int TSet::operator==(const TSet &s) const // сравнение
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-	return ~((*this)==s);
+	int res;
+	if(*this==s)
+		res=0;
+	else res=1;
+	return res;
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
