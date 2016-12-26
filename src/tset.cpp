@@ -36,7 +36,7 @@ int TSet::IsMember(const int Elem) const // элемент множества?
 		return BitField.GetBit(Elem);
 	}
 	else
-		throw "WRONG_VALUE";
+		throw logic_error("WRONG_VALUE");
 }
 
 void TSet::InsElem(const int Elem) // включение элемента множества
@@ -46,7 +46,7 @@ void TSet::InsElem(const int Elem) // включение элемента мно
 		BitField.SetBit(Elem);
 	}
 	else
-		throw "WRONG_VALUE";
+		throw logic_error("WRONG_VALUE");
 }
 
 void TSet::DelElem(const int Elem) // исключение элемента множества
@@ -56,7 +56,7 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
 		BitField.ClrBit(Elem);
 	}
 	else
-		throw "WRONG_VALUE";
+		throw logic_error("WRONG_VALUE");
 }
 
 // теоретико-множественные операции
@@ -96,7 +96,7 @@ TSet TSet::operator+(const int Elem) // объединение с элемент
 		return tmp;
 	}
 	else
-		throw "WRONG_VALUE";
+		throw logic_error("WRONG_VALUE");
 }
 
 TSet TSet::operator-(const int Elem) // разность с элементом
@@ -108,7 +108,7 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 		return tmp;
 	}
 	else
-		throw "WRONG_VALUE";
+		throw logic_error("WRONG_VALUE");
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
