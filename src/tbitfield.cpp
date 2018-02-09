@@ -19,7 +19,7 @@ TBitField::TBitField(int len)
 				pMem[i]=0;
 	}
 	else
-		throw "WRONG_VALUE";
+		throw logic_error("WRONG_VALUE");
 }
 
 TBitField::TBitField(const TBitField &bf) // конструктор копирования
@@ -62,7 +62,7 @@ void TBitField::SetBit(const int n) // установить бит
 	if(n>-1 && n<BitLen)
 		pMem[GetMemIndex(n)]|=GetMemMask(n);
 	else
-		throw "WRONG_VALUE"; 
+		throw logic_error("WRONG_VALUE"); 
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
@@ -70,7 +70,7 @@ void TBitField::ClrBit(const int n) // очистить бит
 	if(n>-1 && n<BitLen)
 		pMem[GetMemIndex(n)]&=~GetMemMask(n);
 	else
-		throw "WRONG_VALUE";
+		throw logic_error("WRONG_VALUE");
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
@@ -78,7 +78,7 @@ int TBitField::GetBit(const int n) const // получить значение б
 	if(n>-1 && n<BitLen)
 		return pMem[GetMemIndex(n)]&GetMemMask(n);
 	else
-		throw "WRONG_VALUE";
+		throw logic_error("WRONG_VALUE");
 }
 
 // битовые операции
@@ -166,10 +166,10 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
 {
 	int i=0;
 	char ch;
-	do
+	/*do
 	{
 		istr >> ch;
-	}while(ch!=' ');
+	}while(ch!=' ');*/
 	while (1)
 	{
 		istr >> ch;
